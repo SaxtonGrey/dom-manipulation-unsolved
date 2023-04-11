@@ -38,3 +38,58 @@
  */
 
 // Your code goes here...
+const container = document.querySelector('.cardsContainer');
+
+// Create a function that sets the background to be red for the item with an id listed in favorites LS
+const setFavoriteItems = () => {
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  container.querySelectorAll('.card').forEach(card => {
+    if (favorites.includes(card.id)) {
+      card.style.backgroundColor = 'red';
+      card.setAttribute('data-fav', true);
+    }
+  });
+};
+
+// set the initial favorite items
+setFavoriteItems();
+
+const addToFavorites = id => {
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  if (!favorites.includes(id)) {
+    favorites.push(id);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+};
+
+// Create a function that deletes an id from favorites LS by id passed as an argument
+const removeFromFavorites = (id) => {
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  if (favorites.includes(id)) {
+    const index = favorites.indexOf(id);
+    favorites.splice(index, 1);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+};
+
+// Callback Function
+const toggleFavorite = event => {
+  if (event.target.classList.contains('card')) {
+    const card = event.target;
+    const id = card.id;
+    if (card.getAttribute('data-fav') === 'true') {
+      // Remove it from favorites and set the background color to white
+      removeFromFavorites(id);
+      card.style.backgroundColor = 'white';
+      card.setAttribute('data-fav', false);
+    } else {
+      // Add it to favorites and set the background color to red
+      addToFavorites(id);
+      card.style.backgroundColor = 'red';
+      card.setAttribute('data-fav', true);
+    }
+  }
+};
+
+// Add the event listener to the container, pass the callback
+container.addEventListener('click', toggleFavorite);
