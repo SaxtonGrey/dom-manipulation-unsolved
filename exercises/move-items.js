@@ -52,9 +52,13 @@ const updateCollections = (id, direction) => {
   if (direction === 'toMain') {
     item.remove();
     main.appendChild(item);
+    item.childNodes[1].classList.remove('fa-heart-crack');
+    item.childNodes[1].classList.add('fa-heart-circle-plus');
   } else {
     item.remove();
     favs.appendChild(item);
+    item.childNodes[1].classList.remove('fa-heart-circle-plus');
+    item.childNodes[1].classList.add('fa-heart-crack');
   }
 }
 
